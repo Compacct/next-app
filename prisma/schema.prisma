@@ -1,0 +1,212 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin_users {
+  id         Int    @id @default(autoincrement())
+  userid     String @db.VarChar(13)
+  password   String @db.VarChar(10)
+  usertype   String @db.VarChar(1)
+  permit     String @db.VarChar(15)
+  restricted String @db.VarChar(1)
+  email      String @default("mail.soumen@gmail.com") @db.VarChar(255)
+}
+
+model banner_images {
+  image_id      Int       @id @default(autoincrement())
+  banner_title  String    @db.VarChar(500)
+  mimetype      String    @db.VarChar(10)
+  published     String    @default("Y") @db.VarChar(1)
+  uploaded_by   String    @db.VarChar(200)
+  date_uploaded DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model download_document {
+  doc_id        Int       @id @default(autoincrement())
+  document_name String    @db.VarChar(500)
+  mimetype      String    @db.VarChar(10)
+  date_uploaded DateTime? @default(now()) @db.Timestamp(0)
+  uploaded_by   String?   @db.VarChar(200)
+  published     String    @default("Y") @db.VarChar(1)
+}
+
+model feedback {
+  feedback_id Int      @id @default(autoincrement())
+  fb_name     String   @db.VarChar(100)
+  fb_mobile   String   @db.VarChar(20)
+  fb_email    String   @db.VarChar(255)
+  fb_comments String   @db.Text
+  date_posted DateTime @default(now()) @db.Timestamp(0)
+}
+
+model franchisee_document {
+  doc_id        Int       @id @default(autoincrement())
+  document_name String    @db.VarChar(500)
+  mimetype      String    @db.VarChar(10)
+  date_uploaded DateTime? @default(now()) @db.Timestamp(0)
+  uploaded_by   String?   @db.VarChar(200)
+  published     String    @default("Y") @db.VarChar(1)
+}
+
+model franchisee_enquiry {
+  franchisee_enquiry_id Int      @id @default(autoincrement())
+  franchisee_name       String   @db.VarChar(200)
+  contact_person        String   @db.VarChar(200)
+  address               String   @db.VarChar(500)
+  country               String   @db.VarChar(200)
+  state_name            String   @db.VarChar(100)
+  district              String   @db.VarChar(200)
+  pin                   String   @db.VarChar(6)
+  phone                 String   @db.VarChar(100)
+  mobile                String   @db.VarChar(100)
+  email                 String   @db.VarChar(100)
+  know_wbca             String   @db.VarChar(100)
+  date_updated          DateTime @default(now()) @db.Timestamp(0)
+}
+
+model franchisee_news {
+  news_id      Int      @id @default(autoincrement())
+  news_title   String   @db.VarChar(500)
+  news_body    String   @db.Text
+  published    String   @default("Y") @db.VarChar(1)
+  date_updated DateTime @default(now()) @db.Timestamp(0)
+}
+
+model master_state {
+  state_id     Int      @id @default(autoincrement())
+  country_id   Int      @default(0)
+  state_name   String   @db.VarChar(32)
+  state_code   String   @db.VarChar(2)
+  date_updated DateTime @default(now()) @db.Timestamp(0)
+
+  @@index([state_name], map: "idx_zone_code_zen")
+  @@index([country_id], map: "idx_zone_country_id_zen")
+}
+
+model news {
+  doc_id        Int       @id @default(autoincrement())
+  document_name String    @db.VarChar(500)
+  mimetype      String    @db.VarChar(10)
+  date_updated  DateTime? @default(now()) @db.Timestamp(0)
+  uploaded_by   String?   @db.VarChar(200)
+  published     String    @default("Y") @db.VarChar(1)
+}
+
+model student_images {
+  image_id      Int       @id @default(autoincrement())
+  student_name  String    @db.VarChar(500)
+  course_name   String    @db.VarChar(25)
+  mimetype      String    @db.VarChar(10)
+  published     String    @default("Y") @db.VarChar(1)
+  uploaded_by   String    @db.VarChar(200)
+  date_uploaded DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model wbca_category {
+  category_id   Int      @id @default(autoincrement())
+  category_name String   @db.VarChar(255)
+  date_updated  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model wbca_course {
+  course_id     Int      @id @default(autoincrement())
+  category_name String   @db.VarChar(255)
+  course_name   String   @db.VarChar(500)
+  abbreviation  String   @db.VarChar(15)
+  course_code   String   @db.VarChar(4)
+  eligibility   String   @db.VarChar(100)
+  duration      String   @db.VarChar(2)
+  date_updated  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model wbca_enrollment {
+  enrollment_id     Int      @id @default(autoincrement())
+  enrollment_status String?  @default("Pending") @db.VarChar(12)
+  enrollment_no     String   @db.VarChar(16)
+  franchisee_code   String   @db.VarChar(100)
+  course_name       String   @db.VarChar(200)
+  course_code       String   @db.VarChar(4)
+  session           String   @db.VarChar(100)
+  period            String   @db.VarChar(2)
+  date_admission    DateTime @db.Date
+  enrollment_name   String   @db.VarChar(500)
+  fathers_name      String   @db.VarChar(200)
+  mothers_name      String   @db.VarChar(200)
+  dob               DateTime @db.Date
+  sex               String   @db.VarChar(100)
+  address           String   @db.VarChar(500)
+  district          String   @db.VarChar(100)
+  state             String   @db.VarChar(200)
+  pin               String   @db.VarChar(6)
+  contact_no        String   @db.VarChar(10)
+  email             String   @db.VarChar(200)
+  mime              String   @db.VarChar(4)
+  result_issue_date DateTime @db.DateTime(0)
+  payment_mode      String   @db.VarChar(20)
+  payment_no        String   @db.VarChar(200)
+  amount            Decimal  @db.Decimal(10, 2)
+  published         String   @default("Y") @db.VarChar(1)
+  date_updated      DateTime @default(now()) @db.Timestamp(0)
+}
+
+model wbca_franchisee {
+  franchisee_id     Int      @id @default(autoincrement())
+  franchisee_code   String   @db.VarChar(10)
+  registration_date DateTime @db.Date
+  franchisee_name   String   @db.VarChar(200)
+  contact_person    String   @db.VarChar(200)
+  address           String   @db.VarChar(500)
+  state             String   @db.VarChar(100)
+  district          String   @db.VarChar(200)
+  pin               String   @db.VarChar(6)
+  mobile            String   @db.VarChar(100)
+  email             String   @db.VarChar(100)
+  password          String   @db.VarChar(100)
+  published         String   @default("Y") @db.VarChar(1)
+  date_updated      DateTime @default(now()) @db.Timestamp(0)
+}
+
+model wbca_result {
+  enrollment_id     Int
+  subj_order        Int
+  subject_name      String   @db.VarChar(200)
+  max_internal      Int
+  max_theory        Int
+  internal_mark     Int
+  theory_mark       Int
+  remarks           String   @db.VarChar(100)
+  result_issue_date DateTime @db.DateTime(0)
+  date_updated      DateTime @default(now()) @db.Timestamp(0)
+
+  @@id([enrollment_id, subj_order])
+}
+
+model wbca_semester {
+  semester_id Int    @id @default(autoincrement())
+  semester    String @db.VarChar(255)
+  details     String @db.VarChar(255)
+}
+
+model wbca_session {
+  session_id   Int      @id @default(autoincrement())
+  session      String   @db.VarChar(100)
+  period       String   @db.VarChar(2)
+  published    String   @default("Y") @db.VarChar(1)
+  date_updated DateTime @default(now()) @db.Timestamp(0)
+}
+
+model wbca_subject {
+  subject_id   Int      @id @default(autoincrement())
+  course_id    Int
+  semester_id  Int
+  subj_order   Int
+  subject_name String   @db.VarChar(500)
+  internal_mm  Int
+  theory_mm    Int
+  date_updated DateTime @default(now()) @db.Timestamp(0)
+}
