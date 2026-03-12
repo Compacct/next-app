@@ -16,11 +16,16 @@ export default async function PrintMarksheetPage({ params }: { params: { id: str
 
   if (!student) notFound();
 
-  // Fetch subjects for this course to display in marksheet
-  const subjects = await prisma.wbca_subject.findMany({
-    where: { course_id: student.course_id },
-    orderBy: { subj_order: "asc" },
+  // Get course_id from wbca_course using course_code
+  const course = await prisma.wbca_course.findFirst({
+    where: { course_code: student.course_code }
   });
+
+  // Fetch subjects for this course to display in marksheet
+  const subjects = course ? await prisma.wbca_subject.findMany({
+    where: { course_id: course.course_id },
+    orderBy: { subj_order: "asc" },
+  }) : [];
 
   return (
     <div className="min-h-screen bg-slate-50 p-12 print:p-0 print:bg-white text-slate-900 font-sans">
